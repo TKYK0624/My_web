@@ -1,354 +1,344 @@
 /* 基礎重置 */
 html {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  scroll-behavior: smooth; /* 滾動頁面 */
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	scroll-behavior: smooth; /* 滾動頁面 */
 }
 
 /* 使用全域選擇器，強迫所有元素（包含標題內的 span）都不顯示預設鼠標 */
-*, *::before, *::after {
-  cursor: none !important;
+*,
+*::before,
+*::after {
+	cursor: none !important;
 }
 
 /* 自定義圓點樣式 */
 .custom-cursor {
-  width: 20px;
-  height: 20px;
-  background-color: rgba(74, 74, 74, 0.3);
-  border: 1px solid #4a4a4a;
-  border-radius: 50%;
-  
-  position: fixed;
-  /* 強制歸零，讓座標完全交給 GSAP 控制 */
-  top: 0;
-  left: 0; 
-  
-  pointer-events: none;
-  z-index: 10000;
-  
-  /* 移除 CSS 的 transition，避免跟 GSAP 衝突 */
-  transition: none; 
-  will-change: transform;
+	width: 20px;
+	height: 20px;
+	background-color: rgba(74, 74, 74, 0.3);
+	border: 1px solid #4a4a4a;
+	border-radius: 50%;
+
+	position: fixed;
+	/* 強制歸零，讓座標完全交給 GSAP 控制 */
+	top: 0;
+	left: 0;
+
+	pointer-events: none;
+	z-index: 10000;
+
+	/* 移除 CSS 的 transition，避免跟 GSAP 衝突 */
+	transition: none;
+	will-change: transform;
 }
 
 /* 當滑鼠移到可點擊元素時，圓點變大 */
 .custom-cursor.active {
-  transform: translate(-50%, -50%) scale(1.5);
-  background-color: rgba(74, 74, 74, 0.1);
+	transform: translate(-50%, -50%) scale(1.5);
+	background-color: rgba(74, 74, 74, 0.1);
 }
 
 div[id] {
-  scroll-margin-top: 75px;
+	scroll-margin-top: 75px;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  font-family: "Comic Sans MS", sans-serif;
-  background: #F7F3E3;
-  color: #333;
-  text-align: center;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	font-family: "Comic Sans MS", sans-serif;
+	background: #f7f3e3;
+	color: #333;
+	text-align: center;
 }
 
 /* 讓 h1 變成 Flex 容器，確保字母排成一排且能獨立位移 */
 /* 1. 針對大標題容器的調整 */
 .floating-title {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; /* 確保手機版字母能自動換行 */
-  margin: 0;
-  padding: 40px 0; /* 給予一點上下空間讓字母浮起 */
-  cursor: default;
-  /* 移除預設 h1 可能有的邊距 */
-  min-height: 1.2em; 
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap; /* 確保手機版字母能自動換行 */
+	margin: 0;
+	padding: 40px 0; /* 給予一點上下空間讓字母浮起 */
+	cursor: default;
+	/* 移除預設 h1 可能有的邊距 */
+	min-height: 1.2em;
 }
 
 /* 2. 針對標題內單個字母 (span) 的基礎狀態 */
 .floating-title span {
-  /* 語法：clamp(最小, 偏好值, 最大) */
-  /* 這裡代表：最小 2rem，隨著螢幕寬度變動 (8vw)，最大 4rem */
-  font-size: clamp(1.5rem, 7vw, 4.5rem); 
-  
-  display: inline-block;
-  font-weight: 900;
-  color: #4a4a4a;
-  letter-spacing: -0.02em; /* 使用 em 單位讓字距也隨比例縮放 */
-  
-  /* 其他陰影與動畫維持原樣 */
-  text-shadow: 
-    1px 1px 0px #ccc,
-    2px 2px 0px #bbb,
-    3px 3px 0px #aaa,
-    4px 4px 0px #999,
-    5px 5px 8px rgba(0,0,0,0.4);
-    
-  will-change: transform, text-shadow;
-  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
-              text-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+	/* 語法：clamp(最小, 偏好值, 最大) */
+	/* 這裡代表：最小 2rem，隨著螢幕寬度變動 (8vw)，最大 4rem */
+	font-size: clamp(1.5rem, 7vw, 4.5rem);
+
+	display: inline-block;
+	font-weight: 900;
+	color: #4a4a4a;
+	letter-spacing: -0.02em; /* 使用 em 單位讓字距也隨比例縮放 */
+
+	/* 其他陰影與動畫維持原樣 */
+	text-shadow: 1px 1px 0px #ccc, 2px 2px 0px #bbb, 3px 3px 0px #aaa,
+		4px 4px 0px #999, 5px 5px 8px rgba(0, 0, 0, 0.4);
+
+	will-change: transform, text-shadow;
+	transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+		text-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* 3. 漂浮狀態：維持厚度並向下延伸陰影 */
 .floating-title span:hover {
-  transform: translateY(-15px); /* 向上漂浮 */
-  
-  /* 增加層數與偏移量，模擬拔地而起的厚度感 */
-  text-shadow: 
-    1px 1px 0px #ccc,
-    2px 2px 0px #bbb,
-    3px 3px 0px #aaa,
-    4px 4px 0px #999,
-    5px 10px 0px #888, 
-    6px 15px 0px #777,
-    10px 25px 15px rgba(0,0,0,0.3);
+	transform: translateY(-15px); /* 向上漂浮 */
+
+	/* 增加層數與偏移量，模擬拔地而起的厚度感 */
+	text-shadow: 1px 1px 0px #ccc, 2px 2px 0px #bbb, 3px 3px 0px #aaa,
+		4px 4px 0px #999, 5px 10px 0px #888, 6px 15px 0px #777,
+		10px 25px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* --- 主頁面容器 --- */
 #public-view {
-  position: relative;
-  z-index: 10;
-  background: #f8f7f4;
-  min-height: 100vh;
-  width: 100%;
-  padding-top: 0.1px; 
-  overflow: hidden;
-  text-align: center;
-  font-family: "Comic Sans MS", sans-serif;
+	position: relative;
+	z-index: 10;
+	background: #f8f7f4;
+	min-height: 100vh;
+	width: 100%;
+	padding-top: 0.1px;
+	overflow: hidden;
+	text-align: center;
+	font-family: "Comic Sans MS", sans-serif;
 }
 
 /* Header 樣式 */
 header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 50px;
-  box-sizing: border-box;
-  background: rgba(248, 247, 244, 0.5);
-  backdrop-filter: blur(5px);
-  border-bottom: 1px solid rgba(0,0,0,0.1);
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1000;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding-right: 50px;
+	box-sizing: border-box;
+	background: rgba(248, 247, 244, 0.5);
+	backdrop-filter: blur(5px);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .main {
-  width: 90%;
-  margin: 0 auto 20px auto; 
-  margin-top: 80px;
-  
-  background: #e3d7ca;
-  color: #444;
-  text-align: center;
-  line-height: 20px;
-  border: 1px solid #333;
-  border-radius: 7px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.7);
-  padding: 20px;
+	width: 90%;
+	margin: 0 auto 20px auto;
+	margin-top: 80px;
 
-  font-family: sans-serif; 
-  font-weight: 200;
-  font-style: normal;
-  font-optical-sizing: auto;
+	background: #e3d7ca;
+	color: #444;
+	text-align: center;
+	line-height: 20px;
+	border: 1px solid #333;
+	border-radius: 7px;
+	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7);
+	padding: 20px;
+
+	font-family: sans-serif;
+	font-weight: 200;
+	font-style: normal;
+	font-optical-sizing: auto;
 }
 
 .nav-button {
-  text-decoration: none;
-  color: #444;
-  padding: 5px 15px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  margin-left: 10px;
+	text-decoration: none;
+	color: #444;
+	padding: 5px 15px;
+	border: 1px solid #444;
+	border-radius: 5px;
+	margin-left: 10px;
 }
 
 .portrait {
-  /* 尺寸設定 */
-  width: 320px;
-  height: 320px;
-  
-  /* 居中與間距 */
-  margin: 0 auto 30px auto; 
-  
-  /* 形狀與外框 */
-  border-radius: 5px; /* 圓形更具極簡現代感，若要直角則改為 4px */
-  border: 1px solid #eee; /* 極細淡灰色邊框 */
-  background: #fdfdfd; /* 預設背景色（照片加載前） */
-  
-  /* 圖片縮放處理 */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  /* 陰影與動畫 */
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* 極淡的浮空感 */
+	/* 尺寸設定 */
+	width: 320px;
+	height: 320px;
+
+	/* 居中與間距 */
+	margin: 0 auto 30px auto;
+
+	/* 形狀與外框 */
+	border-radius: 5px; /* 圓形更具極簡現代感，若要直角則改為 4px */
+	border: 1px solid #eee; /* 極細淡灰色邊框 */
+	background: #fdfdfd; /* 預設背景色（照片加載前） */
+
+	/* 圖片縮放處理 */
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	/* 陰影與動畫 */
+	transition: transform 0.3s ease;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* 極淡的浮空感 */
 }
 
 .portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 確保照片不會變形 */
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* 確保照片不會變形 */
 }
 
 .portrait:hover {
-  transform: translateY(-5px); /* 滑鼠懸停時微動 */
+	transform: translateY(-5px); /* 滑鼠懸停時微動 */
 }
 
 /* 關於我整體的容器 */
 .about-container {
-  display: flex;
-  align-items: center;      /* 垂直置中對齊 */
-  justify-content: center;  /* 整體水平置中 */
-  gap: 50px;                /* 照片與文字之間的間距 */
-  max-width: 900px;         /* 限制最大寬度防止太散 */
-  margin: 0 auto;           /* 容器置中 */
-  padding: 80px 20px;       /* 上下留白，取代寫死的高度 */
+	display: flex;
+	align-items: center; /* 垂直置中對齊 */
+	justify-content: center; /* 整體水平置中 */
+	gap: 50px; /* 照片與文字之間的間距 */
+	max-width: 900px; /* 限制最大寬度防止太散 */
+	margin: 0 auto; /* 容器置中 */
+	padding: 80px 20px; /* 上下留白，取代寫死的高度 */
 }
 
 /* 文字區塊設定 */
 .about-text {
-  flex: 1;                  /* 讓文字佔據剩餘空間 */
-  text-align: left;         /* 極簡風文字通常左對齊，讀起來比較順 */
-  max-width: 500px;
+	flex: 1; /* 讓文字佔據剩餘空間 */
+	text-align: left; /* 極簡風文字通常左對齊，讀起來比較順 */
+	max-width: 500px;
 }
 
 .about-text h2 {
-  margin-top: 0;
-  font-size: 24px;
-  color: #1a1a1a;
-  letter-spacing: 1px;
+	margin-top: 0;
+	font-size: 24px;
+	color: #1a1a1a;
+	letter-spacing: 1px;
 }
 
 .about-text p {
-  font-size: 20px;
-  color: #666;
-  line-height: 1.2;         /* 增加行高，提升閱讀舒適度 */
-  margin-bottom: 15px;
+	font-size: 20px;
+	color: #666;
+	line-height: 1.2; /* 增加行高，提升閱讀舒適度 */
+	margin-bottom: 15px;
 }
 
 /* 響應式設計：當螢幕寬度小於 768px 時自動改為垂直堆疊 */
 @media (max-width: 768px) {
-  .about-container {
-    flex-direction: column; /* 改為上下排列 */
-    text-align: center;
-    gap: 30px;
-  }
-  
-  .about-text {
-    text-align: center;     /* 手機版文字改為置中 */
-  }
+	.about-container {
+		flex-direction: column; /* 改為上下排列 */
+		text-align: center;
+		gap: 30px;
+	}
+
+	.about-text {
+		text-align: center; /* 手機版文字改為置中 */
+	}
 }
 
 /* 作品集網格 */
 .portfolio-grid {
-  display: grid;
-  /* 強制設定為兩欄，每欄各佔一半比例 (1fr) */
-  grid-template-columns: 1fr 1fr; 
-  gap: 30px; /* 卡片之間的間距 */
-  padding: 20px 0;
-  max-width: 1000px; /* 限制最大寬度，避免在大螢幕上拉得太開 */
-  margin: 0 auto;
+	display: grid;
+	/* 強制設定為兩欄，每欄各佔一半比例 (1fr) */
+	grid-template-columns: 1fr 1fr;
+	gap: 30px; /* 卡片之間的間距 */
+	padding: 20px 0;
+	max-width: 1000px; /* 限制最大寬度，避免在大螢幕上拉得太開 */
+	margin: 0 auto;
 }
 
 /* 為了讓手機瀏覽時不會太擠，建議加個媒體查詢，手機版變回一欄 */
 @media (max-width: 768px) {
-  .portfolio-grid {
-    grid-template-columns: 1fr;
-  }
+	.portfolio-grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* 作品卡片樣式 */
 .portfolio-card {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  text-align: left;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 12px;
+	overflow: hidden;
+	cursor: pointer;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	text-align: left;
 }
 
 .portfolio-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+	transform: translateY(-10px);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* 1. 確保容器比例固定為 16:9，並背景設為黑色 */
-.preview-box {
-  width: 100%;
-  aspect-ratio: 16 / 9; /* 這是現代瀏覽器支援的比例設定 */
-  background: #000;    /* 黑色背景可以遮掉 contain 產生的留白 */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;  /* 增加定位穩定性 */
-}
-
-/* 2. 強制影片縮放並防止溢出 */
 .portfolio-video {
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain !important; /* 加入 !important 確保覆蓋任何隱藏設定 */
-  display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain; /* 確保影片縮小到框框內，完整顯示 */
+	background: #000; /* 如果比例不合，旁邊會補黑邊，這樣比較專業 */
+}
+
+/* 預留給照片輪播/GIF 的空間 */
+.preview-box {
+	width: 100%;
+	aspect-ratio: 16 / 9;
+	overflow: hidden;
+	background: #1a1a1a; /* 設為深色，適合 3D 渲染圖 */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 1px solid #eee; /* 分隔圖片與下方文字 */
 }
 
 .preview-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 確保 GIF 填滿格子的同時不變形 */
+	width: 100%;
+	height: 100%;
+	object-fit: cover; /* 確保 GIF 填滿格子的同時不變形 */
 }
 
 .card-info {
-  padding: 15px 20px;
+	padding: 15px 20px;
 }
 
 .card-info h3 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: #222;
+	margin: 0;
+	font-size: 1.2rem;
+	color: #222;
 }
 
 .card-info p {
-  margin: 5px 0 0;
-  font-size: 0.9rem;
-  color: #666;
+	margin: 5px 0 0;
+	font-size: 0.9rem;
+	color: #666;
 }
 
 footer {
-  display: flex;             /* 啟動彈性佈局 */
-  justify-content: center;    /* 水平置中 */
-  align-items: center;        /* 垂直置中 */
-  gap: 30px;                  /* 每個元素之間的間距 */
-  padding: 20px 0;
-  border-top: 1px solid #ddd; /* 加一條淡淡的分隔線增加專業感 */
-  flex-wrap: wrap;            /* 確保在手機版寬度不足時會自動換行，不會擠在一起 */
+	display: flex; /* 啟動彈性佈局 */
+	justify-content: center; /* 水平置中 */
+	align-items: center; /* 垂直置中 */
+	gap: 30px; /* 每個元素之間的間距 */
+	padding: 20px 0;
+	border-top: 1px solid #ddd; /* 加一條淡淡的分隔線增加專業感 */
+	flex-wrap: wrap; /* 確保在手機版寬度不足時會自動換行，不會擠在一起 */
 }
 
 footer p {
-  margin: 0;                  /* 移除段落預設的上下間距 */
-  font-size: 0.9rem;
-  color: #666;
+	margin: 0; /* 移除段落預設的上下間距 */
+	font-size: 0.9rem;
+	color: #666;
 }
 
 .contact-links {
-  display: flex;
-  gap: 15px;                  /* Email 和 GitHub 之間的距離 */
+	display: flex;
+	gap: 15px; /* Email 和 GitHub 之間的距離 */
 }
 
 .contact-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  transition: color 0.3s;
+	text-decoration: none;
+	color: #333;
+	font-weight: bold;
+	transition: color 0.3s;
 }
 
 .contact-links a:hover {
-  color: #777;                /* 滑鼠移上去變色，增加互動感 */
+	color: #777; /* 滑鼠移上去變色，增加互動感 */
 }
