@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const videoSources = [
 		"assets/mp4/unity/Unity_move_test.mp4",
 		"assets/mp4/unity/Unity_slide_test.mp4",
-		"assets/mp4/unity/Unity_interactive_test",
+		"assets/mp4/unity/Unity_interactive_test.mp4",
 		"assets/mp4/unity/Unity_teleport_test.mp4"
 	];
 
