@@ -277,6 +277,13 @@ header {
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
+.portfolio-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 確保影片縮小到框框內，完整顯示 */
+  background: #000;    /* 如果比例不合，旁邊會補黑邊，這樣比較專業 */
+}
+
 /* 預留給照片輪播/GIF 的空間 */
 .preview-box {
   width: 100%;
